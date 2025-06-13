@@ -29,7 +29,7 @@ export default function Home() {
     <div className="flex items-center justify-center flex-col gap-3 h-[100vh]">
       <h1 className="text-4xl font-bold">YernaRDLE</h1>
       <p className="text-2xl">Guess the 5 letter word</p>
-      <Rows word={word}/>
+      <Rows word={word} setWord={setWord}/>
     </div>
   );
 }

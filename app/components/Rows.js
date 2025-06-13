@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect} from "react"
 
-const Row = ({word}) => {
+const Row = ({word, setWord}) => {
   const [tries, setTries] = useState(()=>Array(5).fill(''));
   const [current, setCurrent] = useState('');
   const [counter, setCounter] = useState(0);
@@ -44,8 +44,9 @@ const Row = ({word}) => {
   useEffect(()=>{
     if(counter === 0 || found==true) return;
     for(let i = 0; i<5; i++){
-        if (word.includes(tries[counter-1][i])){
-            if(word.indexOf(tries[counter-1][i]) === i){
+        const letter = tries[counter-1][i]
+        if (word.includes(letter)){
+            if(word[i] === letter){
                 document.getElementById(`box-${counter-1}-${i}`).classList.add('bg-green-600','text-white','border-black')
             }else{
             document.getElementById(`box-${counter-1}-${i}`).classList.add('bg-yellow-600', 'text-white','border-black')       
@@ -56,7 +57,6 @@ const Row = ({word}) => {
     if(word===tries[counter-1]){
         setFound(true);
     }
-
   },[counter])
 
   return (
@@ -71,7 +71,9 @@ const Row = ({word}) => {
         </div>)}
         <p className="text-2xl">
             {found?'You win':counter===5?'You lose':''}
+            
         </p>
+        {word}
     </div>
      
 
