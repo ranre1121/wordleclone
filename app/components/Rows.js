@@ -1,11 +1,12 @@
 'use client';
 import { useState, useEffect} from "react"
 
-const Row = ({word, setWord}) => {
+const Row = ({word, resetKey, setResetKey}) => {
   const [tries, setTries] = useState(()=>Array(5).fill(''));
   const [current, setCurrent] = useState('');
   const [counter, setCounter] = useState(0);
   const [found, setFound] = useState(false);
+  const [gameOver, setGameOver]= useState(false);
   
   useEffect(()=>{
     if (counter===5 || found==true) return;
@@ -28,12 +29,15 @@ const Row = ({word, setWord}) => {
             }
         })
     }
-    window.addEventListener('keyup', onKeyUp) 
-    return () => window.removeEventListener('keyup', onKeyUp);
+    window.addEventListener('keydown', onKeyUp) 
+    return () => window.removeEventListener('keydown', onKeyUp);
   },[current])
 
   useEffect(()=>{
-    if (counter===5 || found==true) return;
+    if (counter===5 || found==true){
+        setGameOver(true);
+        return
+    };
     setTries(old=>{
             const newArr = [...old];
             newArr[counter] = current;
@@ -43,6 +47,9 @@ const Row = ({word, setWord}) => {
 
   useEffect(()=>{
     if(counter === 0 || found==true) return;
+    if(counter === 5 && found === false){
+        setGameOver(true);
+    }
     for(let i = 0; i<5; i++){
         const letter = tries[counter-1][i]
         if (word.includes(letter)){
@@ -56,6 +63,7 @@ const Row = ({word, setWord}) => {
     }
     if(word===tries[counter-1]){
         setFound(true);
+        setGameOver(true);
     }
   },[counter])
 
@@ -70,10 +78,11 @@ const Row = ({word, setWord}) => {
             </div>)}
         </div>)}
         <p className="text-2xl">
-            {found?'You win':counter===5?'You lose':''}
+            {found?'You win':counter===5?`You lose: ${word}`:''}
             
         </p>
-        {word}
+        {gameOver?<button className="border-2 py-1 px-2 text-xl border-blue-500 bg-blue-400 cursor-pointer text-white rounded-md"
+        onClick={()=>setResetKey(resetKey===0?1:0)}>Play again?</button>:''}
     </div>
      
 

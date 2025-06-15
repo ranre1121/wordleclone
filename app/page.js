@@ -6,6 +6,7 @@ import { useState,useEffect } from "react";
 
 export default function Home() {
   const [word, setWord] = useState('');
+  const [resetKey, setResetKey] = useState(0);
 
   const words = [
   "enjoy", "dream", "dance", "catch", "carry", "bring", "below", "again", "after", "about",
@@ -23,13 +24,13 @@ export default function Home() {
   
   useEffect(()=>{
     setWord(words[Math.floor(Math.random()*words.length)])
-  },[])
+  },[resetKey])
 
   return (
     <div className="flex items-center justify-center flex-col gap-3 h-[100vh]">
       <h1 className="text-4xl font-bold">YernaRDLE</h1>
       <p className="text-2xl">Guess the 5 letter word</p>
-      <Rows word={word} setWord={setWord}/>
+      <Rows word={word} setWord={setWord} key={resetKey} resetKey={resetKey} setResetKey={setResetKey}/>
     </div>
   );
 }
